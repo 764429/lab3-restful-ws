@@ -42,8 +42,7 @@ public class AddressBookServiceTest {
     // Prepare server
     AddressBook ab = new AddressBook();
     launchServer(ab);
-    List<Person> oldContactList = new ArrayList<>();
-    oldContactList.addAll(ab.getPersonList());
+    List<Person> oldContactList = new ArrayList<>(ab.getPersonList());
     // Request the address book
     Client client = ClientBuilder.newClient();
     Response response = client.target("http://localhost:8282/contacts")
@@ -75,8 +74,7 @@ public class AddressBookServiceTest {
     // Prepare server
     AddressBook ab = new AddressBook();
     launchServer(ab);
-    List<Person> oldContactList = new ArrayList<>();
-    oldContactList.addAll(ab.getPersonList());
+    List<Person> oldContactList = new ArrayList<>(ab.getPersonList());
 
     // Prepare data
     Person juan = new Person();
@@ -245,7 +243,7 @@ public class AddressBookServiceTest {
 
     // Idempotent
     Client secondClient = ClientBuilder.newClient();
-    Response secondResponse = client.target("http://localhost:8282/contacts")
+    Response secondResponse = secondClient.target("http://localhost:8282/contacts")
             .request(MediaType.APPLICATION_JSON).get();
     assertEquals(200, secondResponse.getStatus());
     assertEquals(MediaType.APPLICATION_JSON_TYPE, secondResponse.getMediaType());
